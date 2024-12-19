@@ -1,9 +1,13 @@
 package com.muhammedturgut.wordboxmobileapp
 
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
+import android.view.Window
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -13,6 +17,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var wordBoxList:ArrayList<WordBox>
     private lateinit var wordAdapter: WordAdapter
+    private lateinit var   sharedPref: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,6 +28,22 @@ class MainActivity : AppCompatActivity() {
         wordAdapter= WordAdapter(wordBoxList)
         binding.recyclerView.layoutManager=LinearLayoutManager(this)
         binding.recyclerView.adapter=wordAdapter
+
+        //Ekranın alt ve üst tarafını gri leştirdik
+
+        val window: Window? =this@MainActivity.window
+        window?.statusBarColor= ContextCompat.getColor(this@MainActivity,R.color.blue)
+
+        //SharedPreferences -XML-Key-Value (simple data storage method)
+        sharedPref=getSharedPreferences("com.muhammedturgut.verisaklama", Context.MODE_PRIVATE)
+        val sayac=sharedPref.getInt("sayac",0)
+        if(sayac==-1){
+            binding.textView.text="Sayac: "
+        }
+        else{
+            binding.textView.text="Sayac: ${sayac}"
+        }
+
 
         try {
             val database=this.openOrCreateDatabase("Word", MODE_PRIVATE,null)
@@ -55,7 +76,7 @@ class MainActivity : AppCompatActivity() {
 
         }
 
-        
+
 
     }
 }

@@ -1,6 +1,8 @@
 package com.muhammedturgut.wordboxmobileapp
 
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
 import android.view.View
@@ -9,16 +11,22 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.muhammedturgut.wordboxmobileapp.databinding.ActivityAddWordBoxBinding
+import com.muhammedturgut.wordboxmobileapp.databinding.ActivityMainBinding
 
 class AddWordBox : AppCompatActivity() {
     private lateinit var binding: ActivityAddWordBoxBinding
     private lateinit var database: SQLiteDatabase
+    private lateinit var bindingSayac:ActivityMainBinding
+    private var sayac:Int=0
+    private lateinit var   sharedPref: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         binding=ActivityAddWordBoxBinding.inflate(layoutInflater)
+        bindingSayac=ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
 
         database=this.openOrCreateDatabase("Word", MODE_PRIVATE,null)
 
@@ -26,9 +34,15 @@ class AddWordBox : AppCompatActivity() {
         binding.editTextTextMean.setText("")
         binding.editTextTextNot.setText("")
 
+        //SharedPreferences -XML-Key-Value (simple data storage method)
+        sharedPref=getSharedPreferences("com.muhammedturgut.verisaklama", Context.MODE_PRIVATE)
+        sayac=sharedPref.getInt("sayac",0)
 
     }
     fun btnSave(view: View){
+
+        sayac++
+        sharedPref.edit().putInt("sayac", sayac).apply()
 
         val word=binding.editTextWord.text.toString()
         val mean=binding.editTextTextMean.text.toString()

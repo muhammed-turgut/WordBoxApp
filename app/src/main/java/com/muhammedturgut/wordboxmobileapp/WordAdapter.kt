@@ -25,6 +25,7 @@ class WordAdapter(val wordList:ArrayList<WordBox>):RecyclerView.Adapter<WordAdap
         holder.binding.RecyclerViewMean.text=wordList.get(position).mean
         holder.binding.recyclerViewNot.text=wordList.get(position).not
 
+
         holder.itemView.setOnClickListener {
 
             val intent=Intent(holder.itemView.context,AddWordBox::class.java)
